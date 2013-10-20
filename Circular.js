@@ -15,6 +15,8 @@ function Circular()
 	this.setAddFunction = setNewAddFunction;
 	this.circles = circles;
 
+	this.quickBind = quickBind;
+
 	$("[circular]").each(function(i, d)
 	{
 		d = $(d);
@@ -46,6 +48,28 @@ function Circular()
 	function setNewAddFunction( vector, fn )
 	{
 		circles[ vector ][ "addfn" ] = fn;
+	}
+
+	function quickBind()
+	{
+		// quickBind will bind any circl that has the "circ-bind" attribute
+
+		$("[circular]").each(function(i, d)
+		{
+			d = $(d);
+
+			if( d.hasAttr("circ-bind") )
+			{
+				var str = d.attr("circ-bind");
+				var name = d.attr("circular");
+				var strarr = str.split(".");
+
+				var pointer = window;
+				strarr.forEach(function(d, i){ pointer = pointer[ d ]; });
+
+				Circle.circles[ name ].bind( pointer );
+			}
+		});
 	}
 }
 
