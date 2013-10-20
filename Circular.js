@@ -96,23 +96,18 @@ function CircleObject(ob)
 	{
 		data = s.preBang(data);
 
+		if( vector.hasAttr("circ-attr") )
+		{
+			var attributes = vector.attr("circ-attr");
+			replaceAttributes({ "attributes": attributes, "el": vector, "data": data });
+		}
+
 		// Loop through all circular attributes and replace them with the data
 		vector.find("[circ-attr]").each(function(i, d)
 		{
 			d = $(d);
-
 			var attributes = d.attr("circ-attr");
-
-			// find all "circ-attr" and replace those attributes with the data
-			d.attr("circ-attr").split(" ").forEach(function(b, n)
-			{
-				var banglist = findBangs( d.attr( b ) ); //list of variables to replace
-
-				banglist.forEach(function(c, k)
-				{
-					d.attr(b, d.attr( b ).replace("!!" + c + "!!", data[c]) );
-				});
-			});
+			replaceAttributes({ "attributes": attributes, "el": d, "data": data });
 		});
 
 		// Loop through "circ-var" and replace their innerHTML
@@ -130,9 +125,26 @@ function CircleObject(ob)
 
 	}
 
+	function replaceAttributes( obj )
+	{
+		var attributes = obj["attributes"];
+		var element = obj["el"];
+		var data = obj["data"];
+
+		// find all "circ-attr" and replace those attributes with the data
+		attributes.split(" ").forEach(function(b, n)
+		{
+			var banglist = findBangs( element.attr( b ) ); //list of variables to replace
+
+			banglist.forEach(function(c, k)
+			{
+				element.attr(b, element.attr( b ).replace("!!" + c + "!!", data[c]) );
+			});
+		});
+	}
+
 	function findBangs( string )
 	{
-		// console.log( string );
 		var l = string.length - 1;
 		var bangs = [];
 		var vars = [];
