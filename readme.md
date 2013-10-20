@@ -11,6 +11,7 @@ How to Use
  - `circ-var="var"`   : Define an element that has a variable inside it
  - `circ-attr="attr"` : Defines an element that has an attribute with a variable, and which attribute it is
  - `!!variable!!`     : Replaces `variable` with `Object["variable"]`
+ - `circ-bind="var"`  : Will setup this parent circle for binding data to `var`
 
 Example
 -------
@@ -22,7 +23,6 @@ Define the data as an array of objects
       {"FriendName": "Luke Skywalker", "FriendID": 92749},
       {"FriendName": "Doc Brown", "FriendID": 71152}
     ];
-    
     
 Bind the data to the `friends` circle
 
@@ -36,3 +36,16 @@ Now create your HTML
         <h1 circ-var="FriendName">Name: !!FriendName!!</h1>
       </div>
     </section>
+
+Alternatively, we can define which data we want our Circle to bind to by giving the parent the `circ-bind` attribute with a value equal to our global variable:
+
+    <section id="friends-list" circular="friends" circ-bind="Array">
+      <div class="friend" vector>
+        <img class="friend-img" circ-attr="src" src="/static/image/!!FriendID!!">
+        <h1 circ-var="FriendName">Name: !!FriendName!!</h1>
+      </div>
+    </section>
+    
+And then we can run our `quickBind()` function to attach these bindings:
+
+    Circular.quickBind();
