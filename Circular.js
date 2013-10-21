@@ -32,6 +32,7 @@ function Circular()
 			"circle"	: d,
 			"vector"	: vector,
 			addfn		: function(){ }
+
 		});
 	});
 
@@ -52,7 +53,7 @@ function Circular()
 
 	function quickBind()
 	{
-		// quickBind will bind any circl that has the "circ-bind" attribute
+		// quickBind will bind any circle that has the "circ-bind" attribute
 
 		$("[circular]").each(function(i, d)
 		{
@@ -83,6 +84,9 @@ function CircleObject(ob)
 	this.data = [];
 
 	this.bind = bindData;
+	this.remove = remove;
+	this.update = update;
+	this.add = add;
 
 	this.preBang = function(d){ return d; };
 	this.postBang = function(d){ return d; };
@@ -94,24 +98,37 @@ function CircleObject(ob)
 
 		data.forEach(function(d, i)
 		{
-			var clone = s.vector.clone();
-			s.circle.append( BangBang(clone, d) );
+			add( d );
 		});
 	}
 
-	function update(data)
+	function add( point )
 	{
-		if( data.length > s.length )
+		s.data.push( point );
+		
+		var clone = s.vector.clone();
+		s.circle.append( BangBang(clone, point) );
+	}
+
+	function remove() // todo: come up with a good way of doing this
+	{
+		console.log( s.data );
+	}
+
+	function update()
+	{
+		if( s.data.length > s.length )
 		{
-			var tmp = data.slice( s.length );
+			// get an array of the new data
+			var tmp = s.data.slice( s.length );
 
-			s.length = data.length;
-			s.data = data;
+			// update the length of data points
+			s.length = s.data.length;
 
+			// add these new data points
 			tmp.forEach(function(d, i)
 			{
-				var clone = s.vector.clone();
-				s.circle.append( BangBang(clone, d) );
+				add( d );
 			});
 		}
 	}
