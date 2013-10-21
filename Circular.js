@@ -104,7 +104,7 @@ function CircleObject(ob)
 
 	function add( point )
 	{
-		s.data.push( point );
+		// s.data.push( point );
 		
 		var clone = s.vector.clone();
 		s.circle.append( BangBang(clone, point) );
